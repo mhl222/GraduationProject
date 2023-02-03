@@ -1,6 +1,9 @@
 // 学生管理页面
 <template>
   <div class="all">
+    <el-input placeholder="请输入内容" class="input-with-select" style="width: 300px;">
+      <el-button slot="append" icon="el-icon-search"></el-button>
+    </el-input>
     <el-table :data="pagination.records" border>
       <el-table-column fixed="left" prop="studentName" label="姓名" width="180"></el-table-column>
       <el-table-column prop="institute" label="学院" width="200"></el-table-column>

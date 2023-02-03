@@ -3,7 +3,7 @@
   <div id='manager'>
     <el-form :model="ruleForm2" status-icon :rules="rules2" ref="ruleForm2" label-width="100px" class="demo-ruleForm">
       <h3 class="alter">修改你的密码</h3>
-        <el-form-item label="密码" prop="pass" class="pass">
+      <el-form-item label="密码" prop="pass" class="pass">
         <el-input type="password" v-model="ruleForm2.pass" autocomplete="off"></el-input>
       </el-form-item>
       <el-form-item label="确认密码" prop="checkPass">
@@ -19,7 +19,7 @@
 
 <script>
   export default {
-    data() {
+    data () {
       var validatePass = (rule, value, callback) => {
         if (value === '') {
           callback(new Error('请输入密码'));
@@ -56,7 +56,7 @@
       };
     },
     methods: {
-      submitForm(formName) {
+      submitForm (formName) {
         this.$refs[formName].validate((valid) => {
           if (valid) {
             let studentId = this.$cookies.get("cid")
@@ -68,11 +68,19 @@
                 studentId
               }
             }).then(res => {
-              if(res.data != null ) { //修改成功提示
+              if (res.data != null) { //修改成功提示
                 this.$message({
                   message: '密码修改成功...',
                   type: 'success'
                 })
+
+                let role = this.$cookies.get("role")
+                this.$router.push({ path: "/" }) //跳转到登录页面
+                this.$cookies.remove("cname") //清除cookie
+                this.$cookies.remove("cid")
+                this.$cookies.remove("role")
+
+
               }
             })
           } else {
@@ -81,7 +89,7 @@
           }
         });
       },
-      resetForm(formName) {
+      resetForm (formName) {
         this.$refs[formName].resetFields();
       }
     }
@@ -89,18 +97,20 @@
 </script>
 
 <style scoped>
-#manager .pass  label{
-  color: red;
-  font-size: 20px;
-}
-#manager {
-  width: 600px;
-  margin: 0 auto;
-  margin-top: 100px;
-  text-align: center;
-  margin-bottom: 300px;
-}
-#manager .alter {
-  margin: 30px 0px;
-}
+  #manager .pass label {
+    color: red;
+    font-size: 20px;
+  }
+
+  #manager {
+    width: 600px;
+    margin: 0 auto;
+    margin-top: 100px;
+    text-align: center;
+    margin-bottom: 300px;
+  }
+
+  #manager .alter {
+    margin: 30px 0px;
+  }
 </style>

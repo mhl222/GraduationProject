@@ -1,11 +1,11 @@
 // 给我留言页面
 <template>
   <div id="message">
-    <div class="title">给我留言</div>
+    <div class="title">讨论区</div>
     <div class="wrapper">
       <div class="title1">
         <el-input
-          placeholder="留言标题"
+          placeholder="话题"
           v-model="title"
           clearable>
         </el-input>

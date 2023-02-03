@@ -2,11 +2,16 @@
 <template>
   <div class="exam">
     <el-table :data="pagination.records" border>
-      <el-table-column fixed="left" prop="source" label="试卷名称" width="180"></el-table-column>
+      <el-table-column fixed="left" prop="source" label="试卷名称" width="180" 
+      :filters="[{text: '计算机网络', value: '计算机网络'}, {text: '数据库理论', value: '数据库理论'}, {text: '数据结构', value: '数据结构'}, {text: '计算机导论', value: '计算机导论'}, {text: '软件工程', value: '软件工程'}]"
+      :filter-method="filterHandler"
+      ></el-table-column>
       <el-table-column prop="description" label="介绍" width="200"></el-table-column>
       <el-table-column prop="institute" label="所属学院" width="120"></el-table-column>
       <el-table-column prop="major" label="所属专业" width="200"></el-table-column>
-      <el-table-column prop="grade" label="年级" width="100"></el-table-column>
+      <el-table-column prop="grade" label="年级" width="100"
+      :filters="[{ text: '2018', value: '2018' }, { text: '2017', value: '2017' }]"
+      :filter-method="filterTag"></el-table-column>
       <el-table-column prop="examDate" label="考试日期" width="120"></el-table-column>
       <el-table-column prop="totalTime" label="持续时间" width="120"></el-table-column>
       <el-table-column prop="totalScore" label="总分" width="120"></el-table-column>
@@ -36,20 +41,20 @@
       :before-close="handleClose">
       <section class="update">
         <el-form ref="form" :model="form" label-width="80px">
-          <el-form-item label="试卷名称">
+          <el-form-item label="试卷科目">
             <el-input v-model="form.source"></el-input>
           </el-form-item>
           <el-form-item label="介绍">
             <el-input v-model="form.description"></el-input>
           </el-form-item>
           <el-form-item label="所属学院">
-            <el-input v-model="form.institute"></el-input>
+            <el-input v-model="form.institute" :disabled="true"></el-input>
           </el-form-item>
           <el-form-item label="所属专业">
-            <el-input v-model="form.major"></el-input>
+            <el-input v-model="form.major" :disabled="true"></el-input>
           </el-form-item>
           <el-form-item label="年级">
-            <el-input v-model="form.grade"></el-input>
+            <el-input v-model="form.grade" :disabled="true"></el-input>
           </el-form-item>
           <el-form-item label="考试日期">
             <el-col :span="11">
@@ -63,7 +68,7 @@
             <el-input v-model="form.totalScore"></el-input>
           </el-form-item>
           <el-form-item label="试卷类型">
-            <el-input v-model="form.type"></el-input>
+            <el-input v-model="form.type" :disabled="true"></el-input>
           </el-form-item>
           <el-form-item label="考生提示">
             <el-input type="textarea" v-model="form.tips"></el-input>
@@ -86,7 +91,7 @@ export default {
       pagination: { //分页后的考试信息
         current: 1, //当前页
         total: null, //记录条数
-        size: 4 //每页条数
+        size: 5 //每页条数
       },
       dialogVisible: false
     }
@@ -159,6 +164,13 @@ export default {
       this.pagination.current = val
       this.getExamInfo()
     },
+    filterHandler(value, row, column) {
+``
+        return row.source === value;
+      },
+      filterTag(value, row) {
+        return row.grade === value;
+      },
   },
 };
 </script>

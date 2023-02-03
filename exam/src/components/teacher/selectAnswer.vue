@@ -1,6 +1,9 @@
 //查询所有题库
 <template>
   <div class="exam">
+    <el-input placeholder="请输入内容" class="input-with-select" style="width: 300px;">
+      <el-button slot="append" icon="el-icon-search"></el-button>
+    </el-input>
     <el-table :data="pagination.records" border :row-class-name="tableRowClassName">
       <el-table-column fixed="left" prop="subject" label="试卷名称" width="180"></el-table-column>
       <el-table-column prop="question" label="题目信息" width="490"></el-table-column>
@@ -8,6 +11,12 @@
       <el-table-column prop="type" label="题目类型" width="200"></el-table-column>
       <el-table-column prop="score" label="试题分数" width="150"></el-table-column>
       <el-table-column prop="level" label="难度等级" width="133"></el-table-column>
+      <el-table-column fixed="right" label="操作" width="150">
+        <template slot-scope="scope">
+          <el-button  type="primary" size="small">编辑</el-button>
+          <el-button  type="danger" size="small">删除</el-button>
+        </template>
+      </el-table-column>
     </el-table>
     <el-pagination
       @size-change="handleSizeChange"

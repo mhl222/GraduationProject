@@ -10,6 +10,7 @@
         本次考试成绩
       </div>
       <div class="show">
+
         <div class="img1" :class="{'img1Transform': imgShow}">
           <img :src="imgSrc.fail1" alt="哭了" v-if="score < 60">
           <img :src="imgSrc.pass1" alt="过了" v-if="score >= 60">
@@ -22,6 +23,9 @@
           <img :src="imgSrc.fail2" alt="哭了" v-if="score < 60">
           <img :src="imgSrc.pass2" alt="过了" v-if="score >= 60">
         </div>
+      </div>
+      <div class="btn">
+        <el-button type="primary" round @click="look">查看答题详情</el-button>
       </div>
       <ul class="time">
         <li class="start"><span>开始时间</span> <span>{{startTime}}</span></li>
@@ -52,6 +56,9 @@ export default {
     this.transiton()
     this.getScore()
   },
+  mounted() {
+    this.exitFullScreen ()
+  },
   methods: {
     transiton() {  //一秒后过渡
       setTimeout(() => {
@@ -66,12 +73,33 @@ export default {
       this.score = score
       this.startTime = startTime
       this.endTime = endTime
-    }
+    },
+    look() {
+      this.$router.push('/scoreDetails')
+    }, exitFullScreen () {
+        if (document.exitFullscreen) {
+          document.exitFullscreen();
+        }
+        if (document.webkitExitFullscreen) {
+          document.webkitExitFullscreen();
+        }
+        if (document.mozCancelFullScreen) {
+          document.mozCancelFullScreen();
+        }
+        if (document.msExitFullscreen) {
+          document.msExitFullscreen();
+        }
+      }
   }
 }
 </script>
 
 <style lang="scss" scoped>
+.btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 .show {
   display: flex;
   justify-content: center;

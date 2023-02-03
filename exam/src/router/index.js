@@ -10,6 +10,11 @@ export default new Router({
       component: () => import('@/components/common/login')
     },
     {
+      path: '/register',
+      name: 'register', //登录界面
+      component: () => import('@/components/common/register')
+    },
+    {
       path: '/index', //教师主页
       component: () => import('@/components/admin/index'),
       children: [
@@ -89,7 +94,8 @@ export default new Router({
         {path: '/examMsg', component: () => import('@/components/student/examMsg')},
         {path: '/message', component: () => import('@/components/student/message')},
         {path: '/studentScore', component: () => import("@/components/student/answerScore")},
-        {path: '/scoreTable', component: () => import("@/components/student/scoreTable")}
+        {path: '/scoreTable', component: () => import("@/components/student/scoreTable")},
+        {path: '/scoreDetails', component: () => import("@/components/student/details")}
       ]
     },
     {path: '/answer',component: () => import('@/components/student/answer')}

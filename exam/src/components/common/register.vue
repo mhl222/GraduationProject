@@ -1,4 +1,4 @@
-<!-- 用户登录界面 -->
+<!-- 用户注册界面 -->
 <template>
   <div id="login">
     <div class="bg"></div>
@@ -6,29 +6,49 @@
       <el-col :lg="8" :xs="16" :md="10" :span="10">
         <div class="top">
           <!-- <i class="iconfont icon-kaoshi"></i><span class="title">在线考试系统</span> -->
-          <span class="title">在线考试系统</span>
+          <span class="title">用户注册</span>
         </div>
         <div class="bottom">
           <div class="container">
-            <p class="title">账号登录</p>
-            <el-form :label-position="labelPosition" label-width="80px" :model="formLabelAlign">
-              <el-form-item label="用户名">
-                <el-input v-model.number="formLabelAlign.username" placeholder="请输入用户名"></el-input>
-              </el-form-item>
-              <el-form-item label="密码">
-                <el-input v-model="formLabelAlign.password" placeholder="请输入密码" type='password'></el-input>
-              </el-form-item>
-              <div class="submit">
-                <el-button type="primary" class="row-login" @click="login()">登录</el-button>
-              </div>
-              <div class="options">
-                <!-- <p class="find"><a href="javascript:;">找回密码</a></p> -->
-                <div class="register">
-                  <span>没有账号?</span>
-                  <span><a href="javascript:;" @click="register">去注册</a></span>
-                </div>
-              </div>
-            </el-form>
+            <p class="title">请完善信息</p>
+            <section class="add">
+              <el-form ref="form" :model="form" label-width="80px">
+                <el-form-item label="姓名">
+                  <el-input v-model="form.studentName"></el-input>
+                </el-form-item>
+                <el-form-item label="性别">
+                  <el-input v-model="form.sex"></el-input>
+                </el-form-item>
+                <el-form-item label="学院">
+                  <el-input v-model="form.institute"></el-input>
+                </el-form-item>
+                <el-form-item label="所属专业">
+                  <el-input v-model="form.major"></el-input>
+                </el-form-item>
+                <el-form-item label="年级">
+                  <el-input v-model="form.grade"></el-input>
+                </el-form-item>
+                <el-form-item label="班级">
+                  <el-input v-model="form.clazz"></el-input>
+                </el-form-item>
+                <el-form-item label="电话号码">
+                  <el-input v-model="form.tel"></el-input>
+                </el-form-item>
+                <el-form-item label="身份证号">
+                  <el-input v-model="form.cardId"></el-input>
+                </el-form-item>
+                <el-form-item label="邮箱">
+                  <el-input v-model="form.email"></el-input>
+                </el-form-item>
+                <el-form-item label="密码">
+                  <el-input v-model="form.pwd"></el-input>
+                </el-form-item>
+                <el-form-item>
+                  <el-button type="primary" @click="onSubmit()">立即创建</el-button>
+                  <el-button type="text" @click="goback()">取消/goback</el-button>
+                </el-form-item>
+              </el-form>
+            </section>
           </div>
         </div>
       </el-col>
@@ -54,61 +74,44 @@ export default {
   name: "login",
   data() {
     return {
-      role: 2,
-      labelPosition: 'left',
-      formLabelAlign: {
-        username: '20154084',
-        password: '123456'
+      form: { //表单数据初始化
+        studentName: null,
+        grade: null,
+        major: null,
+        clazz: null,
+        institute: null,
+        tel: null,
+        email: null,
+        pwd: null,
+        cardId: null,
+        sex: null,
+        role: 2
       }
     }
   },
   methods: {
-    //用户登录请求后台处理
-    login() {
-      console.log("登录操作执行-------");
+    onSubmit() { //数据提交
       this.$axios({
-        url: `/api/login`,
+        url: '/api/student',
         method: 'post',
         data: {
-          ...this.formLabelAlign
+          ...this.form
         }
-      }).then(res=>{
-        let resData = res.data.data
-        if(resData != null) {
-          switch(resData.role) {
-            case "0":  //管理员
-              this.$cookies.set("cname", resData.adminName)
-              this.$cookies.set("cid", resData.adminId)
-              this.$cookies.set("role", 0)
-              this.$router.push({path: '/index' }) //跳转到首页
-              break
-            case "1": //教师
-              this.$cookies.set("cname", resData.teacherName)
-              this.$cookies.set("cid", resData.teacherId)
-              this.$cookies.set("role", 1)
-              this.$router.push({path: '/index' }) //跳转到教师用户
-              break
-            case "2": //学生
-              this.$cookies.set("cname", resData.studentName)
-              this.$cookies.set("cid", resData.studentId)
-              this.$router.push({path: '/student'})
-              break
-          }
-        }
-        if(resData == null) { //错误提示
+      }).then(res => {
+        if(res.data.code == 200) {
           this.$message({
-            showClose: true,
-            type: 'error',
-            message: '用户名或者密码错误'
+            message: '数据添加成功',
+            type: 'success'
           })
+          this.$router.push({path: '/studentManage'})
         }
       })
     },
-    clickTag(key) {
-      this.role = key
+    cancel() { //取消按钮
+      this.form = {}
     },
-    register() {
-      this.$router.push({path: '/register' }) //跳转到首页
+    goback() {
+      this.$router.push({path: '/' }) //跳转到首页
     }
   },
   computed: mapState(["userInfo"]),
@@ -226,5 +229,9 @@ a:link {
 }
 .bottom .options .register span:nth-child(1) {
   color: #8C8C8C;
+}
+.add {
+  padding: 0px 40px;
+  width: 400px;
 }
 </style>
